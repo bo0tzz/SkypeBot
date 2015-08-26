@@ -106,7 +106,7 @@ public class General implements Module {
 
     @Command(name = "choice")
     public static void choice(ChatMessage chat, String message) {
-        String[] choices;
+        String[] choices = new String[0];
 
         if (message.contains(",")) {
             choices = message.trim().split(",");

@@ -106,9 +106,15 @@ public class General implements Module {
 
     @Command(name = "choice")
     public static void choice(ChatMessage chat, String message) {
-        String[] choices = message.trim().split(",");
+        String[] choices;
 
-        if (choices.length == 1) {
+        if (message.contains(",")) {
+            choices = message.trim().split(",");
+        } else if (message.contains("or")) {
+            choices = message.trim().split("or");
+        }
+
+        if (choices.length <= 1) {
             Resource.sendMessage("Give me choices!");
             return;
         }

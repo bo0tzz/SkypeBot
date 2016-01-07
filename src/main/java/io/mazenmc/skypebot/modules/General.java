@@ -748,16 +748,6 @@ public class General implements Module {
         Resource.sendMessage("/me would love to remove " + chatMessage.getSenderId() + "'s ass right now");
     }
 
-    @Command(name = "basoon")
-    public static void cmdBasoon(ChatMessage chatMessage) throws SkypeException {
-        Resource.sendMessage(chatMessage, "Blows Air Strongly Out Of Nose");
-    }
-
-    @Command(name = "(?i)lol", command = false, exact = false)
-    public static void lolDetect(ChatMessage chatMessage) throws SkypeException {
-        Resource.sendMessage("basoon*");
-    }
-
     @Command(name = "(?i)savage", command = false, alias = "(?i)brutal")
     public static void savageDettector(ChatMessage chatMessage) throws SkypeException {
         String[] options = new String[] {

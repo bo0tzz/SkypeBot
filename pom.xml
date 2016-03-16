@@ -204,7 +204,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.mazenmc.skypebot.StarterPackage</mainClass>
+                            <mainClass>io.mazenmc.skypebot.StarterKt</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

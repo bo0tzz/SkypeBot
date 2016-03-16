@@ -10,6 +10,7 @@ import io.mazenmc.skypebot.utils.Resource
 import java.net.URLEncoder
 
 object ThirdParty : Module {
+    @JvmStatic
     @Command(name = "twitter\\.com\\/[A-z0-9]+\\/status\\/[0-9]{18}", command = false, exact = false)
     fun cmdTwitter(chat: ReceivedMessage) {
         var wholeMessage = chat.content.asPlaintext()
@@ -25,6 +26,7 @@ object ThirdParty : Module {
         Resource.sendMessage(chat, "${status.user.name}: ${status.text}")
     }
 
+    @JvmStatic
     @Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
     fun cmdWikipedia(chat: ReceivedMessage) {
         var wholeMessage = chat.content.asPlaintext()
@@ -58,6 +60,7 @@ object ThirdParty : Module {
         Resource.sendMessage(chat, snippet)
     }
 
+    @JvmStatic
     @Command(name = "fuckingweather", alias = arrayOf("yellingweather"))
     fun cmdWeather(chat: ReceivedMessage, location: String) {
         var call = (CommandResources.weatherUrl + location).replace(' ', '+')
@@ -84,6 +87,7 @@ object ThirdParty : Module {
     }
 
     @Command(name = "define")
+    @JvmStatic
     fun cmdDefine(chat: ReceivedMessage, word: String) {
         var json = Unirest.get("http://api.urbandictionary.com/v0/define?term=${URLEncoder.encode(word, "UTF-8")}")
                 .asJson().body.`object`

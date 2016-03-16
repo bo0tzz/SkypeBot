@@ -58,7 +58,7 @@ open class StringResponse(val template: String) {
             var subEnd = sub.indexOf(']')
             var repl = arrays[sub.substring(1, subEnd)] ?: arrayOf("Invalid array name provided")
 
-            response = response.replace(response.substring(index, index + subEnd),
+            response = response.replace(response.substring(index, index + subEnd + 4),
                     repl[ThreadLocalRandom.current().nextInt(repl.size)])
         }
 

@@ -190,8 +190,6 @@ public class ModuleManager {
             return;
         }
 
-        System.out.println("Received chat message: " + command);
-
         if (command.length() < 1) {
             return;
         }
@@ -225,7 +223,6 @@ public class ModuleManager {
 
             if (m.find()) {
                 executeCommand(chat, s.getValue(), m);
-                System.out.println("executed command");
                 return;
             } else if (!s.getValue().getParameterRegex(false).equals(s.getValue().getParameterRegex(true))) {
                 match = s.getKey();

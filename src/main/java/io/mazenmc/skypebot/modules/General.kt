@@ -20,7 +20,7 @@ object General {
         ModuleManager.registerCommand(CommandBuilder("c"),
                 MethodResponse(Responder() { m, a -> Resource.askQuestion(Utils.compiledArgs(m))}))
         ModuleManager.registerCommand(CommandBuilder("lmgtfy"),
-                MethodResponse(Responder { m, a ->  "http://lmgtfy.com/?q=${URLEncoder.encode(Utils.compiledArgs(m))}"}))
+                MethodResponse(Responder { m, a ->  "http://lmgtfy.com/?q=${URLEncoder.encode(Utils.compiledArgs(m), "UTF-8")}"}))
         ModuleManager.registerCommand(CommandBuilder("choice"), MethodResponse(Responder() { m, a -> choice(m, a)}))
         ModuleManager.registerCommand(CommandBuilder("exclude").min(2), MethodResponse(Responder() { m, a -> exclude(m, a)}))
         ModuleManager.registerCommand(CommandBuilder("kick").admin(true).min(1), MethodResponse(Responder { m, a -> kick(a)}))
@@ -33,6 +33,7 @@ object General {
         ModuleManager.registerCommand(CommandBuilder("(?i)savage").command(false).alias(arrayOf("(?i)brutal")),
                 StringResponse("[ar.links]").addArray("links", CommandResources.savageLinks))
 
+        ModuleManager.registerCommand(CommandBuilder("ping"), StringResponse("Pong!"))
         ModuleManager.registerCommand(CommandBuilder("lenny"), StringResponse("( ͡° ͜ʖ ͡°)"))
         ModuleManager.registerCommand(CommandBuilder("flip"), StringResponse("(╯°□°）╯︵ ┻━┻)"))
         ModuleManager.registerCommand(CommandBuilder("idk"), StringResponse("¯\\_(ツ)_/¯"))
@@ -74,7 +75,7 @@ object General {
     }
 
     private fun exclude(message: ReceivedMessage, args: Array<out String>): String {
-        var stat = StatisticsManager.statistics().get(args[1]) ?: return "Couldn't find statistic by " + args[1]
+        var stat = StatisticsManager.statistics()[args[1]] ?: return "Couldn't find statistic by " + args[1]
 
         if (!Utils.isInteger(args[0]))
             return "Please provide an integer for the amount of days you wish to exclude this individual"
@@ -86,7 +87,7 @@ object General {
     }
 
     private fun kick(args: Array<out String>): String {
-        var stat = StatisticsManager.statistics().get(args[0]) ?: return "Couldn't find statistic by " + args[0]
+        var stat = StatisticsManager.statistics()[args[0]] ?: return "Couldn't find statistic by " + args[0]
 
         StatisticsManager.removeStat(args[0])
         SkypeBot.groupConv()?.kick(args[0])

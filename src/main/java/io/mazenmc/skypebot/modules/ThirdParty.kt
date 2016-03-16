@@ -106,7 +106,7 @@ object ThirdParty : Module {
         var example = definition.getString("example")
         var link = definition.getString("permalink")
 
-        Resource.sendMessage(chat, "Definition for ${word} by ${author}:\n" +
+        Resource.sendMessage(chat, "\nDefinition for ${word} by ${author}:\n" +
                 "${def}\n${example}\n" +
                 "${ups} Thumbs up, ${downs} Thumbs down")
         Resource.sendMessage(chat, link)

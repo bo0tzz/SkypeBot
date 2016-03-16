@@ -159,7 +159,7 @@ object SkypeBot {
                 println("Logging out of old Skype")
                 oldSkype.logout()
             } else {
-                //sendMessage(Message.create().with(Text.rich("Mazen's Bot ${Resource.VERSION} started!").withColor(Color.GREEN)))
+                sendMessage(Message.create().with(Text.rich("Mazen's Bot ${Resource.VERSION} started!").withColor(Color.GREEN)))
             }
         }
     }

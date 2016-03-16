@@ -71,7 +71,7 @@ object StatisticsManager {
             e.value.messages().forEach { m ->
                 var obj = JSONObject()
 
-                obj.put("contents", m.contents)
+                obj.put("contents", m.contents())
                 obj.put("time", m.time)
 
                 array.put(obj)

@@ -215,12 +215,12 @@ public class Utils {
     }
 
     public static void restartBot() {
-        StatisticsManager.saveStatistics();
+        StatisticsManager.INSTANCE.saveStatistics();
         System.out.println("Restarting...");
 
         try {
             Unirest.shutdown();
-            SkypeBot.getSkype().logout();
+            SkypeBot.INSTANCE.getSkype().logout();
         } catch (IOException | ConnectionException ignored) {
         }
 

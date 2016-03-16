@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
-public object SkypeBot {
+object SkypeBot {
     private val scheduler:     ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     private val relogRunnable: Runnable                 = RelogRunnable()
     private val errorHandler:  ErrorHandler             = BotErrHandler()
@@ -39,7 +39,7 @@ public object SkypeBot {
 
     private var listenerMap:  Field        by Delegates.notNull()
 
-    public fun loadConfig() {
+    fun loadConfig() {
         var prop = Properties()
         var config = File("bot.properties")
 
@@ -61,10 +61,10 @@ public object SkypeBot {
         }
     }
 
-    public fun loadSkype() {
+    fun loadSkype() {
         try {
-            listenerMap = SkypeEventDispatcher::class.javaClass.getDeclaredField("listeners")
-            listenerMap.setAccessible(true)
+            listenerMap = SkypeEventDispatcher::class.java.getDeclaredField("listeners")
+            listenerMap.isAccessible = true
         } catch (e: NoSuchFieldException) {
             e.printStackTrace() // welp rip
             System.exit(0)
@@ -74,19 +74,19 @@ public object SkypeBot {
         scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS)
     }
 
-    public fun loadThirdParty() {
+    fun loadThirdParty() {
         var twitterInfo = Utils.readAllLines("twitter_auth")
         var cb = ConfigurationBuilder()
 
         cb.setDebugEnabled(true)
-                .setOAuthConsumerKey(twitterInfo.get(0))
-                .setOAuthConsumerSecret(twitterInfo.get(1))
-                .setOAuthAccessToken(twitterInfo.get(2))
-                .setOAuthAccessTokenSecret(twitterInfo.get(3))
-        twitter = TwitterFactory(cb.build()).getInstance()
+                .setOAuthConsumerKey(twitterInfo[0])
+                .setOAuthConsumerSecret(twitterInfo[1])
+                .setOAuthAccessToken(twitterInfo[2])
+                .setOAuthAccessTokenSecret(twitterInfo[3])
+        twitter = TwitterFactory(cb.build()).instance
     }
 
-    public fun groupConv(): GroupChat? {
+    fun groupConv(): GroupChat? {
         if (groupConv == null) {
             groupConv = skype?.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype") as GroupChat
         }
@@ -94,15 +94,15 @@ public object SkypeBot {
         return groupConv
     }
 
-    public fun twitter(): Twitter? {
+    fun twitter(): Twitter? {
         return twitter
     }
 
-    public fun getSkype(): Skype? {
+    fun getSkype(): Skype? {
         return skype
     }
 
-    public fun sendMessage(message: String) {
+    fun sendMessage(message: String) {
         try {
             groupConv()?.sendMessage(message)
         } catch (e: ConnectionException) {
@@ -111,7 +111,7 @@ public object SkypeBot {
         }
     }
 
-    public fun sendMessage(message: Message) {
+    fun sendMessage(message: Message) {
         try {
             groupConv()?.sendMessage(message)
         } catch (e: ConnectionException) {
@@ -133,7 +133,7 @@ public object SkypeBot {
                     println("Logged in with username ${username}")
                     newSkype.subscribe()
                     println("Successfully subscribed")
-                    newSkype.getEventDispatcher().registerListener(SkypeEventListener())
+                    newSkype.eventDispatcher.registerListener(SkypeEventListener())
                     retry = false
                 } catch (t: Throwable) {
                     t.printStackTrace()
@@ -147,7 +147,7 @@ public object SkypeBot {
 
             if (oldSkype != null) {
                 try {
-                    var listeners = listenerMap.get(oldSkype.getEventDispatcher())
+                    var listeners = listenerMap.get(oldSkype.eventDispatcher)
 
                     if (listeners is MutableMap<*, *>) {
                         listeners.clear()
@@ -167,7 +167,7 @@ public object SkypeBot {
     private class BotErrHandler: ErrorHandler {
         override fun handle(errorSource: ErrorSource?, error: Throwable?, shutdown: Boolean) {
             if (shutdown) {
-                println("Error detected, relogging: ${error}")
+                println("Error detected, relogging: ${error.toString()}")
                 skype = null
                 scheduler.submit(relogRunnable)
             }

@@ -9,10 +9,10 @@ import io.mazenmc.skypebot.utils.CommandResources
 import io.mazenmc.skypebot.utils.Resource
 import java.net.URLEncoder
 
-public object ThirdParty : Module {
-    Command(name = "twitter\\.com\\/[A-z0-9]+\\/status\\/[0-9]{18}", command = false, exact = false)
+object ThirdParty : Module {
+    @Command(name = "twitter\\.com\\/[A-z0-9]+\\/status\\/[0-9]{18}", command = false, exact = false)
     fun cmdTwitter(chat: ReceivedMessage) {
-        var wholeMessage = chat.getContent().asPlaintext()
+        var wholeMessage = chat.content.asPlaintext()
         var idMatcher = Resource.TWITTER_REGEX.matcher(wholeMessage)
 
         if (!idMatcher.find()) {
@@ -22,19 +22,19 @@ public object ThirdParty : Module {
         var tweetId = idMatcher.group(2) ?: return
         var status = SkypeBot.twitter()!!.tweets().showStatus(tweetId.toLong())
 
-        Resource.sendMessage(chat, "${status.getUser().getName()}: ${status.getText()}")
+        Resource.sendMessage(chat, "${status.user.name}: ${status.text}")
     }
 
-    Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
+    @Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
     fun cmdWikipedia(chat: ReceivedMessage) {
-        var wholeMessage = chat.getContent().asPlaintext()
+        var wholeMessage = chat.content.asPlaintext()
         var idMatcher = Resource.WIKIPEDIA_REGEX.matcher(wholeMessage)
 
         if (!idMatcher.find()) {
             return // invalid twitter url
         }
 
-        var articleId = idMatcher.group(1).splitBy(" ")[0]
+        var articleId = idMatcher.group(1).split(" ")[0]
 
         if ("".equals(articleId)) return
 
@@ -52,16 +52,16 @@ public object ThirdParty : Module {
 
         if ("-1".equals(key)) {
             snippet = "*${json.getJSONObject(key).getString("title")}*\n${json.getJSONObject(key)
-                    .getString("extract").splitBy("\n")[0]}"
+                    .getString("extract").split("\n")[0]}"
         }
 
         Resource.sendMessage(chat, snippet)
     }
 
-    Command(name = "fuckingweather", alias = arrayOf("yellingweather"))
+    @Command(name = "fuckingweather", alias = arrayOf("yellingweather"))
     fun cmdWeather(chat: ReceivedMessage, location: String) {
         var call = (CommandResources.weatherUrl + location).replace(' ', '+')
-        var json = Unirest.get(call).asJson().getBody().getObject()
+        var json = Unirest.get(call).asJson().body.`object`
 
         if (json.getInt("cod") != 200) {
             Resource.sendMessage(chat, "I CAN'T GET THE FUCKING WEATHER")
@@ -83,10 +83,10 @@ public object ThirdParty : Module {
         Resource.sendMessage(chat, "THE FUCKING WEATHER IN ${location.toUpperCase()} IS ${temp} F | ${metric} C")
     }
 
-    Command(name = "define")
+    @Command(name = "define")
     fun cmdDefine(chat: ReceivedMessage, word: String) {
         var json = Unirest.get("http://api.urbandictionary.com/v0/define?term=${URLEncoder.encode(word, "UTF-8")}")
-                .asJson().getBody().getObject()
+                .asJson().body.`object`
         var status = json.getString("result_type")
 
         if ("no_results".equals(status)) {

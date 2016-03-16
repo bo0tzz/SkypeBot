@@ -7,8 +7,8 @@ import java.util.concurrent.ThreadLocalRandom
 import java.util.stream.Collectors
 import java.util.stream.IntStream
 
-public class MessageStatistic(var name: String) {
-    private var messages: MutableList<Message> = ArrayList<Message>()
+class MessageStatistic(var name: String) {
+    private var messages: MutableList<Message> = ArrayList()
 
     constructor(name: String, messages: JSONArray) : this(name) {
         IntStream.range(0, messages.length()).forEach { i ->
@@ -25,60 +25,60 @@ public class MessageStatistic(var name: String) {
         }
     }
 
-    public fun name(): String {
+    fun name(): String {
         return name
     }
 
-    public fun words(): List<String> {
+    fun words(): List<String> {
         var words = ArrayList<String>()
 
-        messages.map { s -> s.contents.splitBy(" ") }.forEach { s -> s.forEach { w -> words.add(w) } }
+        messages.map { s -> s.contents().split(" ") }.forEach { s -> s.forEach { w -> words.add(w) } }
 
         return words
     }
 
-    public fun wordCount(): Int {
-        return messages.map { m -> m.contents().splitBy(" ").size() }
+    fun wordCount(): Int {
+        return messages.map { m -> m.contents().split(" ").size }
                 .filter { i -> i > 2 }
                 .sum()
     }
     
-    public fun letterCount(): Int {
-        return messages.map { m -> m.contents().toCharList().filter { i -> i != ' ' }.size() }
+    fun letterCount(): Int {
+        return messages.map { m -> m.contents().toCharArray().filter { i -> i != ' ' }.size }
                 .sum()
     }
     
-    public fun messageAmount(): Int {
-        return messages.size()
+    fun messageAmount(): Int {
+        return messages.size
     }
     
-    public fun averageWords(): Int {
+    fun averageWords(): Int {
         return wordCount() / messageAmount()
     }
     
-    public fun randomMessage(): Message {
-        return messages.get(ThreadLocalRandom.current().nextInt(messageAmount()))
+    fun randomMessage(): Message {
+        return messages[ThreadLocalRandom.current().nextInt(messageAmount())]
     }
     
-    public fun commandCount(): Int {
+    fun commandCount(): Int {
         return messages.map(Message::contents)
                 .filter { s -> s.startsWith("@") }
-                .size()
+                .size
     }
 
-    public fun commandPercent(): Double {
+    fun commandPercent(): Double {
         return (commandCount().toDouble() / messageAmount().toDouble()) * 100
     }
 
-    public fun addMessage(message: ReceivedMessage) {
-        addMessage(Message(message.getContent().asPlaintext(), System.currentTimeMillis()))
+    fun addMessage(message: ReceivedMessage) {
+        addMessage(Message(message.content.asPlaintext(), System.currentTimeMillis()))
     }
 
-    public fun addMessage(message: Message) {
+    fun addMessage(message: Message) {
         messages.add(message)
     }
 
-    public fun messages(): List<Message> {
+    fun messages(): List<Message> {
         return messages
     }
 }

@@ -14,15 +14,15 @@ import java.awt.Color
 import java.io.File
 import javax.imageio.ImageIO
 
-public class SkypeEventListener: Listener {
-    EventHandler
-    public fun onMessage(event: MessageReceivedEvent) {
-        ModuleManager.parseText(event.getMessage())
-        StatisticsManager.logMessage(event.getMessage())
+class SkypeEventListener: Listener {
+    @EventHandler
+    fun onMessage(event: MessageReceivedEvent) {
+        ModuleManager.parseText(event.message)
+        StatisticsManager.logMessage(event.message)
     }
 
-    EventHandler
-    public fun onImage(event: PictureReceivedEvent) {
+    @EventHandler
+    fun onImage(event: PictureReceivedEvent) {
         var file = File("lastImage.png")
 
         if (file.exists()) {
@@ -30,20 +30,20 @@ public class SkypeEventListener: Listener {
         }
 
         try {
-            if (!SkypeBot.groupConv()!!.getAllUsers().any { u -> u.getUsername().equals(event.getSender().getUsername()) }) {
+            if (!SkypeBot.groupConv()!!.allUsers.any { u -> u.username.equals(event.sender.username) }) {
                 return; // what you doin? random tryin' to send pics. I dun want your nudes bruh.
             }
 
-            ImageIO.write(event.getSentImage(), "png", file)
-            event.getChat().sendMessage(Message.create().with(Text.rich("Uploading image...").withColor(Color.CYAN)))
+            ImageIO.write(event.sentImage, "png", file)
+            event.chat.sendMessage(Message.create().with(Text.rich("Uploading image...").withColor(Color.CYAN)))
 
             var link = Utils.upload(file)
 
-            event.getChat().sendMessage(Message.create().with(Text.rich("Uploaded!").withColor(Color.GREEN)))
-            Resource.sendMessage("${event.getSender().getUsername()} sent an image...")
+            event.chat.sendMessage(Message.create().with(Text.rich("Uploaded!").withColor(Color.GREEN)))
+            Resource.sendMessage("${event.sender.username} sent an image...")
             Resource.sendMessage(link)
         } catch (ex: Exception) {
-            event.getChat().sendMessage(Message.create().with(Text
+            event.chat.sendMessage(Message.create().with(Text
                     .rich("ERROR: Unable to send image to group chat").withColor(Color.RED)))
             ex.printStackTrace()
         }

@@ -40,7 +40,7 @@ public class Resource {
     private static ChatterBotSession generalBot;
 
     public static void sendMessage(String message) {
-        SkypeBot.INSTANCE$.sendMessage(message);
+        SkypeBot.INSTANCE.sendMessage(message);
     }
 
     public static void sendManager(String message) {

@@ -15,8 +15,8 @@ import java.sql.Date
 import java.util.concurrent.ThreadLocalRandom
 import java.util.function.Predicate
 
-public object General {
-    public fun load() {
+object General {
+    fun load() {
         ModuleManager.registerCommand(CommandBuilder("c"),
                 MethodResponse(Responder() { m, a -> Resource.askQuestion(Utils.compiledArgs(m))}))
         ModuleManager.registerCommand(CommandBuilder("lmgtfy"),
@@ -58,20 +58,19 @@ public object General {
         ModuleManager.registerCommand(CommandBuilder("restart"), ProcessedResponse("Restarting...",
                 CommandProcessor() { m, a -> Utils.restartBot()}))
         ModuleManager.registerCommand(CommandBuilder("restoretopic"), ProcessedResponse("N/A",
-                CommandProcessor { m, a -> SkypeBot.groupConv()?.setTopic("Mazen's Skype Chat") }))
+                CommandProcessor { m, a -> SkypeBot.groupConv()?.topic = "Mazen's Skype Chat" }))
         ModuleManager.registerCommand(CommandBuilder("pme"), ProcessedResponse("N/A",
-                CommandProcessor { m, a -> m.getSender().getContact()
-                        .getPrivateConversation().sendMessage(Utils.compiledArgs(m)) }))
+                CommandProcessor { m, a -> m.sender.contact.privateConversation.sendMessage(Utils.compiledArgs(m)) }))
     }
 
     private fun choice(message: ReceivedMessage, args: Array<out String>): String {
-        var choices = Utils.compiledArgs(message).splitBy(",")
+        var choices = Utils.compiledArgs(message).split(",")
 
-        if (choices.size() <= 1) {
+        if (choices.size <= 1) {
             return "Give me choices!"
         }
 
-        return "I say " + choices[ThreadLocalRandom.current().nextInt(choices.size())]
+        return "I say " + choices[ThreadLocalRandom.current().nextInt(choices.size)]
     }
 
     private fun exclude(message: ReceivedMessage, args: Array<out String>): String {
@@ -82,7 +81,7 @@ public object General {
 
         var date = Date(System.currentTimeMillis() + (Integer.parseInt(args[0]) * 86400000L))
 
-        stat.addMessage(Message("Gone until ${date}", date.getTime()))
+        stat.addMessage(Message("Gone until ${date}", date.time))
         return "Successfully excluded ${args[1]} from chat cleaner until ${date}"
     }
 
@@ -95,12 +94,12 @@ public object General {
     }
 
     private fun loveMe(message: ReceivedMessage): String {
-        var contact = message.getSender().getContact()
-        var rand = ThreadLocalRandom.current().nextInt(CommandResources.loveCards.size())
+        var contact = message.sender.contact
+        var rand = ThreadLocalRandom.current().nextInt(CommandResources.loveCards.size)
 
         contact.sendRequest("I love you")
-        contact.getPrivateConversation().sendMessage("You can be my special friend <3")
-        contact.getPrivateConversation().sendMessage(CommandResources.loveCards[rand])
+        contact.privateConversation.sendMessage("You can be my special friend <3")
+        contact.privateConversation.sendMessage(CommandResources.loveCards[rand])
         return "I'll love you... :*"
     }
 }

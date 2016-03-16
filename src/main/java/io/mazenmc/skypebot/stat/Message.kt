@@ -1,11 +1,11 @@
 package io.mazenmc.skypebot.stat
 
-public data class Message(var contents: String, var time: Long) {
-    public fun contents(): String {
+data class Message(private var contents: String, var time: Long) {
+    fun contents(): String {
         return contents
     }
 
-    public fun time(): Long {
+    fun time(): Long {
         return time
     }
 }

@@ -7,10 +7,10 @@ import java.util.concurrent.ThreadLocalRandom
 import java.util.function.Predicate
 import kotlin.properties.Delegates
 
-public open class StringResponse(val template: String) {
-    val arrays: MutableMap<String, Array<String>> = HashMap<String, Array<String>>()
+open class StringResponse(val template: String) {
+    val arrays: MutableMap<String, Array<String>> = HashMap()
     var predicate: Predicate<ReceivedMessage>? = null
-    var lastArgs: LinkedList<String> by Delegates.notNull() // let's just say I lost my mind
+    var lastArgs: MutableList<String> by Delegates.notNull() // let's just say I lost my mind
 
     /*
      * Take the string: "[sender.nick]'s first arg is [arg.1], their third was [arg.3], and their second was [arg.2]"
@@ -34,19 +34,19 @@ public open class StringResponse(val template: String) {
      *
      * https://ideone.com/QjLvMI
      */
-    public open fun process(message: ReceivedMessage): String {
+    open fun process(message: ReceivedMessage): String {
         if (predicate != null && !predicate!!.test(message)) {
             return "N/A";
         }
 
-        var response = template.replace("[sender.id]", message.getSender().getUsername())
-                .replace("[sender.nick]", Utils.getDisplayName(message.getSender()))
-        var args: MutableCollection<String> = message.getContent().asPlaintext().splitBy(" ").toMutableSet()
+        var response = template.replace("[sender.id]", message.sender.username)
+                .replace("[sender.nick]", Utils.getDisplayName(message.sender))
+        var args: MutableCollection<String> = message.content.asPlaintext().split(" ").toMutableSet()
 
         args.remove(args.first()) // remove @[command]
-        args = args.toLinkedList()
+        args = args.toMutableList()
 
-        if (args !is LinkedList) {
+        if (args !is MutableList) {
             return "" // not going to happen, for casts only
         }
 
@@ -54,18 +54,21 @@ public open class StringResponse(val template: String) {
 
         while (response.contains("[ar.")) {
             var index = response.indexOf("[ar.")
-            var sub = response.substring(index + 3, response.length()) // + 3 to get rid of starter info
+            var sub = response.substring(index + 3, response.length) // + 3 to get rid of starter info
             var subEnd = sub.indexOf(']')
-            var repl = arrays.get(sub.substring(0, subEnd)) ?: arrayOf("Invalid array name provided")
+            var repl = arrays[sub.substring(0, subEnd)] ?: arrayOf("Invalid array name provided")
 
             response = response.replace(response.substring(index, index + subEnd),
-                    repl[ThreadLocalRandom.current().nextInt(repl.size())])
+                    repl[ThreadLocalRandom.current().nextInt(repl.size)])
         }
 
         while (response.contains("[arg.")) {
             var index = response.indexOf("[arg.")
-            var argIndex = Integer.parseInt(response.charAt(index + 5).toString())
-            var replace = args.get(argIndex) ?: return "Insufficient arguments provided"
+            var argIndex = Integer.parseInt(response[index + 5].toString())
+            var replace = args[argIndex]
+
+            if ("".equals(replace))
+                return "Insufficient arguments provided"
 
             if (checkSafe(replace)) // there's a smarter way to avoid this, but this is simple
                 return "Yeahhh--no, I'm not going to allow you to enter ${replace}"
@@ -75,7 +78,7 @@ public open class StringResponse(val template: String) {
 
         while (response.contains("[r.")) {
             var index = response.indexOf("[r.")
-            var sub = response.substring(index + 3, response.length()) // + 3 to get rid of starter info
+            var sub = response.substring(index + 3, response.length) // + 3 to get rid of starter info
             var subEnd = sub.indexOf(']')
             var bound = Integer.parseInt(sub.substring(0, subEnd))
 
@@ -86,17 +89,17 @@ public open class StringResponse(val template: String) {
         return response
     }
 
-    public fun addArray(name: String, array: Array<String>): StringResponse {
+    fun addArray(name: String, array: Array<String>): StringResponse {
         arrays.put(name, array)
         return this
     }
 
-    public fun predicate(predicate: Predicate<ReceivedMessage>): StringResponse {
+    fun predicate(predicate: Predicate<ReceivedMessage>): StringResponse {
         this.predicate = predicate;
         return this
     }
 
-    private fun checkSafe(input: String): Boolean {
+    fun checkSafe(input: String): Boolean {
         return input.contains("[arg.") || input.contains("[sender.id]") ||
                 input.contains("[sender.nick]") || input.contains("[r.") ||
                 input.contains("[ar.")

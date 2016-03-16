@@ -5,15 +5,16 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.ConcurrentHashMap
 
-public object StatisticsManager {
+object StatisticsManager {
     private val statistics: MutableMap<String, MessageStatistic> = ConcurrentHashMap<String, MessageStatistic>()
 
-    public fun logMessage(message: ReceivedMessage) {
-        var senderId = message.getSender().getUsername()
+    fun logMessage(message: ReceivedMessage) {
+        var senderId = message.sender.username
 
         if (!statistics.containsKey(senderId))
             statistics.put(senderId, MessageStatistic(senderId))
@@ -21,19 +22,19 @@ public object StatisticsManager {
         statistics.get(senderId)!!.addMessage(message)
     }
 
-    public fun removeStat(id: String) {
+    fun removeStat(id: String) {
         statistics.remove(id)
     }
 
-    public fun ownerFor(statistic: MessageStatistic): String {
-        return statistics.filter { e -> e.getValue().equals(statistic) }.iterator().next().getKey()
+    fun ownerFor(statistic: MessageStatistic): String {
+        return statistics.filter { e -> e.value.equals(statistic) }.iterator().next().key
     }
 
-    public fun statistics(): Map<String, MessageStatistic> {
+    fun statistics(): Map<String, MessageStatistic> {
         return statistics
     }
 
-    public fun loadStatistics() {
+    fun loadStatistics() {
         var source = StringBuilder()
 
         try {
@@ -61,13 +62,13 @@ public object StatisticsManager {
         }
     }
 
-    public fun saveStatistics() {
+    fun saveStatistics() {
         var json = JSONObject()
 
-        statistics.entrySet().forEach { e ->
+        statistics.entries.forEach { e ->
             var array = JSONArray()
 
-            e.getValue().messages().forEach { m ->
+            e.value.messages().forEach { m ->
                 var obj = JSONObject()
 
                 obj.put("contents", m.contents)
@@ -76,9 +77,9 @@ public object StatisticsManager {
                 array.put(obj)
             }
 
-            json.put(e.getKey(), array)
+            json.put(e.key, array)
         }
 
-        Files.write(Paths.get("statistics.json"), json.toString().toByteArray("UTF-8"))
+        Files.write(Paths.get("statistics.json"), json.toString().toByteArray(Charset.defaultCharset()))
     }
 }

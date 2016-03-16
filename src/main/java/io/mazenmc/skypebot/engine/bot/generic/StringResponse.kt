@@ -56,8 +56,7 @@ open class StringResponse(val template: String) {
             var index = response.indexOf("[ar.")
             var sub = response.substring(index + 3, response.length) // + 3 to get rid of starter info
             var subEnd = sub.indexOf(']')
-            println(sub.substring(0, subEnd))
-            var repl = arrays[sub.substring(0, subEnd)] ?: arrayOf("Invalid array name provided")
+            var repl = arrays[sub.substring(1, subEnd)] ?: arrayOf("Invalid array name provided")
 
             response = response.replace(response.substring(index, index + subEnd),
                     repl[ThreadLocalRandom.current().nextInt(repl.size)])

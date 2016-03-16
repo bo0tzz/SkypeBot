@@ -37,6 +37,14 @@ public class Utils {
         return content.substring(content.indexOf(splits[splits.length == 1 ? 0 : 1]), content.length());
     }
 
+    public static void printTrace(Throwable t) {
+        t.printStackTrace();
+
+        if (t.getCause() != null) {
+            printTrace(t.getCause());
+        }
+    }
+
     public static String generateSignature(String key, String payload) {
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "HmacSHA1");
 

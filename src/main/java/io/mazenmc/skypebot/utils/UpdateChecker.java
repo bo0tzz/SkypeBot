@@ -80,14 +80,14 @@ public class UpdateChecker extends Thread {
                     } catch (InterruptedException ignored) {
                     }
 
-                    StatisticsManager.instance().saveStatistics();
+                    StatisticsManager.saveStatistics();
 
                     try {
                         Unirest.shutdown();
                     } catch (IOException ignored) {
                     }
 
-                    SkypeBot.INSTANCE$.getSkype().logout();
+                    SkypeBot.getSkype().logout();
                     System.exit(0);
                 } else {
                     lastSha = sha;

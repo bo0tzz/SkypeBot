@@ -215,12 +215,12 @@ public class Utils {
     }
 
     public static void restartBot() {
-        StatisticsManager.INSTANCE$.saveStatistics();
+        StatisticsManager.saveStatistics();
         System.out.println("Restarting...");
 
         try {
             Unirest.shutdown();
-            SkypeBot.INSTANCE$.getSkype().logout();
+            SkypeBot.getSkype().logout();
         } catch (IOException | ConnectionException ignored) {
         }
 
@@ -332,14 +332,14 @@ public class Utils {
     }
 
     public static User getUser(String username) {
-        while (SkypeBot.INSTANCE$.groupConv() == null) { // wait for boot up
+        while (SkypeBot.groupConv() == null) { // wait for boot up
             try {
                 Thread.sleep(500L); // wait half a second
             } catch (InterruptedException ignored) {
             }
         }
 
-        return SkypeBot.INSTANCE$.groupConv().getUser(username);
+        return SkypeBot.groupConv().getUser(username);
     }
 
     public static String getDisplayName(User user) {

@@ -33,7 +33,8 @@ import java.util.concurrent.TimeUnit;
 public class Utils {
     public static String compiledArgs(ReceivedMessage message) {
         String content = message.getContent().asPlaintext();
-        return content.substring(content.indexOf(content.split(" ")[1]), content.length());
+        String[] splits = content.split(" ");
+        return content.substring(content.indexOf(splits[splits.length == 1 ? 0 : 1]), content.length());
     }
 
     public static String generateSignature(String key, String payload) {

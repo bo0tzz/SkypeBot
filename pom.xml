@@ -170,7 +170,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>0.12.613</version>
+                <version>1.0.0</version>
 
                 <executions>
                     <execution>

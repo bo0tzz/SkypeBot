@@ -18,7 +18,7 @@ public object StatisticsManager {
         if (!statistics.containsKey(senderId))
             statistics.put(senderId, MessageStatistic(senderId))
 
-        statistics.get(senderId).addMessage(message)
+        statistics.get(senderId)!!.addMessage(message)
     }
 
     public fun removeStat(id: String) {

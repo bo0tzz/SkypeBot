@@ -25,7 +25,7 @@ object General {
         ModuleManager.registerCommand(CommandBuilder("exclude").min(2), MethodResponse(Responder() { m, a -> exclude(m, a)}))
         ModuleManager.registerCommand(CommandBuilder("kick").admin(true).min(1), MethodResponse(Responder { m, a -> kick(a)}))
         ModuleManager.registerCommand(CommandBuilder("loveme"), MethodResponse(Responder { m, a -> loveMe(m) }))
-        ModuleManager.registerCommand(CommandBuilder("8ball").min(1), StringResponse("[ar.options]")
+        ModuleManager.registerCommand(CommandBuilder("8ball"), StringResponse("[ar.options]")
                 .addArray("options", CommandResources.ballResponses))
 
         ModuleManager.registerCommand(CommandBuilder("flickr.com/photos/stuntguy3000").exact(false).command(false),

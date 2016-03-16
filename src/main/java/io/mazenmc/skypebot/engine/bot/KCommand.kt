@@ -27,7 +27,7 @@ class CommandBuilder(val name: String) {
     var admin: Boolean = false
     var alias: Array<String> = emptyArray()
     var command: Boolean = true
-    var exact: Boolean = true
+    var exact: Boolean = false
     var minArgs: Int = 0
 
     fun admin(admin: Boolean): CommandBuilder {

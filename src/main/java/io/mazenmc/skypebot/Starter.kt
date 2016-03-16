@@ -3,6 +3,7 @@ package io.mazenmc.skypebot
 import io.mazenmc.skypebot.engine.bot.ModuleManager
 import io.mazenmc.skypebot.modules.General
 import io.mazenmc.skypebot.stat.StatisticsManager
+import io.mazenmc.skypebot.utils.UpdateChecker
 
 fun main(args: Array<String>) {
     SkypeBot.loadThirdParty()
@@ -11,4 +12,5 @@ fun main(args: Array<String>) {
     General.load()
     StatisticsManager.loadStatistics()
     ModuleManager.loadModules("io.mazenmc.skypebot.modules")
+    UpdateChecker().start()
 }

@@ -45,7 +45,7 @@ public class Resource {
 
     public static void sendManager(String message) {
         try {
-            SkypeBot.getSkype().getContact(BOT_MANAGER).getPrivateConversation()
+            SkypeBot.INSTANCE.getSkype().getContact(BOT_MANAGER).getPrivateConversation()
                     .sendMessage(message);
         } catch (Exception ignored) {
         }

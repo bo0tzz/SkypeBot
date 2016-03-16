@@ -37,13 +37,13 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>0.12.613</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
-            <version>0.12.613</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>

@@ -332,14 +332,14 @@ public class Utils {
     }
 
     public static User getUser(String username) {
-        while (SkypeBot.groupConv() == null) { // wait for boot up
+        while (SkypeBot.INSTANCE.groupConv() == null) { // wait for boot up
             try {
                 Thread.sleep(500L); // wait half a second
             } catch (InterruptedException ignored) {
             }
         }
 
-        return SkypeBot.groupConv().getUser(username);
+        return SkypeBot.INSTANCE.groupConv().getUser(username);
     }
 
     public static String getDisplayName(User user) {

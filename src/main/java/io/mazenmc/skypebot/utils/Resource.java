@@ -19,6 +19,7 @@ public class Resource {
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
     public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
     public static final String KEY_URBAND = Utils.readFirstLine("key_ud");
+    public static final String KEY_WEATHER = Utils.readFirstLine("key_weather");
     public static final String BOT_MANAGER = Utils.readFirstLine("owner");
     public static final String REGEX_ALL = "(.+)";
     public static final String REGEX_DOUBLE = "(-?[0-9]+\\.[0-9]+)";

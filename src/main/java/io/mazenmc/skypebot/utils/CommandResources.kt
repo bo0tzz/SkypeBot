@@ -41,8 +41,8 @@ object CommandResources {
             "yo I was walking down the halls and into my next class playing \"In Da Club\" by 50 cent on full volume with my laptop on one hand",
             "Less halawa more carrot @aaomidi",
             "I live in Vancouver, which is practically Asia. Soon enough British Columbia will be renamed to Asian Columbia")
-    val confirmed: Array<String> = arrayOf("[arg.1] Confirmed", "[arg.1] won't happen!" ,"[arg.1] will happen some day",
-            "[arg.1] will happen some day", "Just wait and see")
+    val confirmed: Array<String> = arrayOf("[arg.a] Confirmed", "[arg.a] won't happen!" ,"[arg.a] will happen some day",
+            "[arg.a] will happen some day", "Just wait and see")
     val md5Response: String = "1% of devs (people who know their shit)\n" +
             "md_2 = uses one class for everything\n" +
             "md_3 = true == true, yoo!\n" +

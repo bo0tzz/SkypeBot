@@ -64,7 +64,14 @@ open class StringResponse(val template: String) {
 
         while (response.contains("[arg.")) {
             var index = response.indexOf("[arg.")
-            var argIndex = Integer.parseInt(response[index + 5].toString())
+            var ch = response[index + 5]
+
+            if (ch == 'a') {
+                response = response.replace(response.substring(index, index + 7), Utils.compiledArgs(message))
+                continue
+            }
+
+            var argIndex = Integer.parseInt(ch.toString())
             var replace = args[argIndex]
 
             if ("".equals(replace))

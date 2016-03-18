@@ -129,19 +129,19 @@ object StatisticsModule: Module {
         var first = Utils.firstSpoken(stat)
         var last = Utils.lastSpoken(stat)
 
-        toSend[0] = "------ $name's statistics ------"
-        toSend[1] = "Message count: ${stat.messageAmount()}"
-        toSend[2] = "Word count: ${stat.wordCount()}"
-        toSend[3] = "Average words per message: ${format.format(stat.averageWords())}"
-        toSend[4] = "Command count: ${stat.commandCount()}"
-        toSend[5] = "Random message: ${stat.randomMessage().contents()}"
-        toSend[6] = "First message sent at ${Date(first.time).toString()}"
-        toSend[7] = "First message: ${first.contents()}"
-        toSend[8] = "Last message sent at ${Date(last.time).toString()}"
-        toSend[9] = "Last message: ${last.contents()}"
-        toSend[10] = "Percentage of messages which were commands: " +
-                format.format(stat.commandPercent())
-        toSend[11] = "---------------------------------------"
+        toSend.add("------ $name's statistics ------")
+        toSend.add("Message count: ${stat.messageAmount()}")
+        toSend.add("Word count: ${stat.wordCount()}")
+        toSend.add("Average words per message: ${format.format(stat.averageWords())}")
+        toSend.add("Command count: ${stat.commandCount()}")
+        toSend.add("Random message: ${stat.randomMessage().contents()}")
+        toSend.add("First message sent at ${Date(first.time).toString()}")
+        toSend.add("First message: ${first.contents()}")
+        toSend.add("Last message sent at ${Date(last.time).toString()}")
+        toSend.add("Last message: ${last.contents()}")
+        toSend.add("Percentage of messages which were commands: " +
+                format.format(stat.commandPercent()))
+        toSend.add("---------------------------------------")
 
         Resource.sendMessages(toSend)
     }

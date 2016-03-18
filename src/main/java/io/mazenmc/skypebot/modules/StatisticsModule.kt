@@ -125,7 +125,7 @@ object StatisticsModule: Module {
 
         var user = Utils.getUser(name)
         var name = Utils.getDisplayName(user)
-        var toSend = ArrayList<String>()
+        var toSend = ArrayList<String>(13)
         var first = Utils.firstSpoken(stat)
         var last = Utils.lastSpoken(stat)
 

@@ -29,6 +29,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Utils {
     public static String compiledArgs(ReceivedMessage message) {
@@ -358,5 +360,16 @@ public class Utils {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    public static <T> Stream<Map.Entry<T, Long>> sortByFrequency(List<T> list) {
+        return list.stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((e, e1) -> (int) (e1.getValue() - e.getValue()));
+    }
+
+    public static <T> Map.Entry<T, Long> firstByFrequency(List<T> list) {
+        return optionalGet(sortByFrequency(list).findFirst());
     }
 }

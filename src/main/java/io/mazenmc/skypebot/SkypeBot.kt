@@ -130,7 +130,7 @@ object SkypeBot {
                     newSkype = SkypeBuilder(username, password).withAllResources()
                             .withExceptionHandler(errorHandler).build()
                     newSkype.login()
-                    println("Logged in with username ${username}")
+                    println("Logged in with username $username")
                     newSkype.subscribe()
                     println("Successfully subscribed")
                     newSkype.eventDispatcher.registerListener(SkypeEventListener())

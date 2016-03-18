@@ -78,7 +78,7 @@ open class StringResponse(val template: String) {
                 return "Insufficient arguments provided"
 
             if (checkSafe(replace)) // there's a smarter way to avoid this, but this is simple
-                return "Yeahhh--no, I'm not going to allow you to enter ${replace}"
+                return "Yeahhh--no, I'm not going to allow you to enter $replace"
 
             response = response.replace(response.substring(index, index + 7), replace)
         }

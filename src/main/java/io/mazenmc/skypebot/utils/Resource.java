@@ -9,6 +9,7 @@ import com.samczsun.skype4j.formatting.Message;
 import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -67,6 +68,10 @@ public class Resource {
         } catch (Exception ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }
+    }
+
+    public static void sendMessages(List<String> message) {
+        sendMessages(message.toArray(new String[message.size()]));
     }
 
     public static void sendMessages(String... message) {

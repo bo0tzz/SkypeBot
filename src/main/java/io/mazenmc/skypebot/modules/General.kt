@@ -82,8 +82,8 @@ object General {
 
         var date = Date(System.currentTimeMillis() + (Integer.parseInt(args[0]) * 86400000L))
 
-        stat.addMessage(Message("Gone until ${date}", date.time))
-        return "Successfully excluded ${args[1]} from chat cleaner until ${date}"
+        stat.addMessage(Message("Gone until $date", date.time))
+        return "Successfully excluded ${args[1]} from chat cleaner until $date"
     }
 
     private fun kick(args: Array<out String>): String {

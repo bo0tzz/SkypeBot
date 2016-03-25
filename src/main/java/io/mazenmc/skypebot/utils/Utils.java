@@ -326,8 +326,19 @@ public class Utils {
                 .start();
 
         process.waitFor(10000, TimeUnit.MILLISECONDS);
-        return new JSONObject(new BufferedReader(new InputStreamReader(process.getInputStream())).readLine())
+        return new JSONObject(readBuffer(new BufferedReader(new InputStreamReader(process.getInputStream()))))
                 .getJSONObject("rsp").getJSONObject("image").getString("original_image");
+    }
+
+    public static String readBuffer(BufferedReader reader) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        String last = null;
+
+        while ((last = reader.readLine()) != null) {
+            sb.append(last);
+        }
+
+        return sb.toString();
     }
 
     public static String getUrlSource(String urlInput) throws IOException {

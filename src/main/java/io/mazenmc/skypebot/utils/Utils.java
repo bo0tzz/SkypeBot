@@ -10,6 +10,7 @@ import io.mazenmc.skypebot.stat.Message;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONObject;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
@@ -319,13 +320,14 @@ public class Utils {
 
     public static String upload(File image) throws Exception { // I'm still surprised this works
         Process process = new ProcessBuilder()
-                .command("/bin/bash", "imgur.sh", image.getAbsolutePath())
+                .command("/bin/bash", "uploadImage.sh")
                 .redirectErrorStream(true)
-                .directory(image.getParentFile())
+                .directory(new File("/home/skype"))
                 .start();
 
         process.waitFor(10000, TimeUnit.MILLISECONDS);
-        return new BufferedReader(new InputStreamReader(process.getInputStream())).readLine();
+        return new JSONObject(new BufferedReader(new InputStreamReader(process.getInputStream())).readLine())
+                .getJSONObject("rsp").getJSONObject("image").getString("original_image");
     }
 
     public static String getUrlSource(String urlInput) throws IOException {

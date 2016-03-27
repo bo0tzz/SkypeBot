@@ -327,7 +327,6 @@ public class Utils {
 
         process.waitFor(10000, TimeUnit.MILLISECONDS);
         String output = readBuffer(new BufferedReader(new InputStreamReader(process.getInputStream())));
-        System.out.println(output);
         return new JSONObject(output)
                 .getJSONObject("rsp").getJSONObject("image").getString("original_image");
     }

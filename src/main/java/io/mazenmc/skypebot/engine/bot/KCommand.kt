@@ -56,6 +56,10 @@ class CommandBuilder(val name: String) {
     }
 
     fun internal(): CommandInternal {
+        if (name.endsWith("\\b")) {
+            name += "\\b"
+        }
+
         return CommandInternal(name, admin, alias, command, exact, minArgs)
     }
 }

@@ -23,7 +23,7 @@ data class CommandInternal(val name: String, val admin: Boolean, val alias: Arra
     }
 }
 
-class CommandBuilder(val name: String) {
+class CommandBuilder(var name: String) {
     var admin: Boolean = false
     var alias: Array<String> = emptyArray()
     var command: Boolean = true

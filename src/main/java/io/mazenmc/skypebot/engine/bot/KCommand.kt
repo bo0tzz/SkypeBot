@@ -56,7 +56,7 @@ class CommandBuilder(var name: String) {
     }
 
     fun internal(): CommandInternal {
-        if (name.endsWith("\\b")) {
+        if (!name.endsWith("\\b")) {
             name += "\\b"
         }
 

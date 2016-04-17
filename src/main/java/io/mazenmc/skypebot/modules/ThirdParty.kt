@@ -52,7 +52,7 @@ object ThirdParty : Module {
 
         var snippet = "Error finding wikipedia article"
 
-        if ("-1".equals(key)) {
+        if (!("-1".equals(key))) {
             snippet = "*${json.getJSONObject(key).getString("title")}*\n${json.getJSONObject(key)
                     .getString("extract").split("\n")[0]}"
         }
